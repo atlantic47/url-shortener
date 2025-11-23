@@ -17,9 +17,17 @@ class ShortenRequest(BaseModel):
     """Request schema for creating a shortened URL."""
 
     original_url: HttpUrl
-    ttl_seconds: Optional[int] = Field(None, ge=1, description="Time-to-live in seconds")
+    ttl_seconds: Optional[int] = Field(None, ge=60, description="Time-to-live in seconds (minimum 60 seconds)")
     custom_alias: Optional[str] = Field(None, min_length=3, max_length=20)
     ab_test: Optional[ABTestConfig] = None
+
+    @field_validator("ttl_seconds", mode="after")
+    @classmethod
+    def validate_ttl(cls, v: Optional[int]) -> Optional[int]:
+        """Validate TTL is reasonable."""
+        if v is not None and v < 60:
+            raise ValueError("ttl_seconds must be at least 60 seconds (1 minute). For testing, use 60 or omit this field for permanent URLs.")
+        return v
 
     @field_validator("custom_alias")
     @classmethod
