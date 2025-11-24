@@ -1,6 +1,6 @@
 # URL Shortener Service
 
-A production-ready URL shortening service built with FastAPI, featuring analytics tracking, A/B testing, rate limiting, and GeoIP enrichment.
+A URL shortening service built with FastAPI, featuring analytics tracking, A/B testing, rate limiting, and GeoIP enrichment.
 
 ## Features
 
